@@ -22,49 +22,53 @@ const LoginScreen = ({ navigation }) => {
   const [errorText, setErrorText] = useState('');
 
   const passwordInputRef = createRef();
-  const handleSubmitPress = () => {
-    setErrorText('');
-    if (!userEmail) {
-      Alert.alert('Please fill Email');
-    }
-    if (!userPassword) {
-      Alert.alert('Please fill Password');
-      return;
-    }
-    setLoading(true);
-    let dataToSend = { email: userEmail, password: userPassword }
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
+  // const handleSubmitPress = () => {
+  //   setErrorText('');
+  //   if (!userEmail) {
+  //     Alert.alert('Please fill Email');
+  //   }
+  //   if (!userPassword) {
+  //     Alert.alert('Please fill Password');
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   let dataToSend = { email: userEmail, password: userPassword }
+  //   let formBody = [];
+  //   for (let key in dataToSend) {
+  //     let encodedKey = encodeURIComponent(key);
+  //     let encodedValue = encodeURIComponent(dataToSend[key]);
+  //     formBody.push(encodedKey + '=' + encodedValue);
+  //   }
+  //   formBody = formBody.join('&');
 
-    fetch('http://localhost:3000/api/user/login', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setLoading(false);
-        console.log(responseJson);
-        if (responseJson.status === 'success') {
-          AsyncStorage.setItem('user_id', responseJson.data.email);
-          console.log(responseJson.data.email);
-          navigation.replace('DrawerNavigationRoutes')
-        } else {
-          setErrorText(responseJson.msg);
-          console.log('Please check your email id or password');
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error(error);
-      })
+  //   fetch('http://localhost:3000/api/user/login', {
+  //     method: 'POST',
+  //     body: formBody,
+  //     headers: {
+  //       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((responseJson) => {
+  //       setLoading(false);
+  //       console.log(responseJson);
+  //       if (responseJson.status === 'success') {
+  //         AsyncStorage.setItem('user_id', responseJson.data.email);
+  //         console.log(responseJson.data.email);
+  //         navigation.replace('DrawerNavigationRoutes')
+  //       } else {
+  //         setErrorText(responseJson.msg);
+  //         console.log('Please check your email id or password');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false);
+  //       console.error(error);
+  //     })
+  // }
+
+  const handleSubmitPress = () => {
+    navigation.navigate('DrawerNavigationRoutes')
   }
 
   return (
