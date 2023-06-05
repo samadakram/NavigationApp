@@ -12,68 +12,94 @@ import {
   Alert,
 } from 'react-native';
 import Loader from './Components/Loader';
+import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
 
   const [loading, setLoading] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [userPassword, setUserPassword] = useState();
   const [errorText, setErrorText] = useState('');
 
   const passwordInputRef = createRef();
-  // const handleSubmitPress = () => {
-  //   setErrorText('');
-  //   if (!userEmail) {
-  //     Alert.alert('Please fill Email');
-  //   }
-  //   if (!userPassword) {
-  //     Alert.alert('Please fill Password');
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   let dataToSend = { email: userEmail, password: userPassword }
-  //   let formBody = [];
-  //   for (let key in dataToSend) {
-  //     let encodedKey = encodeURIComponent(key);
-  //     let encodedValue = encodeURIComponent(dataToSend[key]);
-  //     formBody.push(encodedKey + '=' + encodedValue);
-  //   }
-  //   formBody = formBody.join('&');
+  const handleSubmitPress = async () => {
+    setErrorText('');
+    if (!userEmail) {
+      Alert.alert('Please fill Email');
+    }
+    if (!userPassword) {
+      Alert.alert('Please fill Password');
+      return;
+    }
+    setLoading(true);
+    // let dataToSend = { email: userEmail, password: userPassword }
+    // let formBody = [];
+    // for (let key in dataToSend) {
+    //   let encodedKey = encodeURIComponent(key);
+    //   let encodedValue = encodeURIComponent(dataToSend[key]);
+    //   formBody.push(encodedKey + '=' + encodedValue);
+    // }
+    // formBody = formBody.join('&');
 
-  //   fetch('http://localhost:3000/api/user/login', {
-  //     method: 'POST',
-  //     body: formBody,
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       setLoading(false);
-  //       console.log(responseJson);
-  //       if (responseJson.status === 'success') {
-  //         AsyncStorage.setItem('user_id', responseJson.data.email);
-  //         console.log(responseJson.data.email);
-  //         navigation.replace('DrawerNavigationRoutes')
-  //       } else {
-  //         setErrorText(responseJson.msg);
-  //         console.log('Please check your email id or password');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setLoading(false);
-  //       console.error(error);
-  //     })
-  // }
+    // let user = {
+    //   email: userEmail,
+    //   password: userPassword
+    // };
 
-  const handleSubmitPress = () => {
-    navigation.navigate('DrawerNavigationRoutes')
+    // fetch('http://192.168.86.79:3001/login', {
+    //   method: 'POST',
+    //   body: user,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     setLoading(false);
+    //     console.log("res==>", responseJson);
+    //     if (responseJson.status === 'Login successful') {
+    //       AsyncStorage.setItem('user_id', responseJson.data.email);
+    //       console.log(responseJson.data.email);
+    //       navigation.replace('DrawerNavigationRoutes')
+    //     } else {
+    //       setErrorText(responseJson.msg);
+    //       console.log('Please check your email id or password');
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     setLoading(false);
+    //     console.error(error);
+    //   })
+
+
+    try {
+      const response = await axios.post('http://192.168.86.79:3001/login', {
+        email: userEmail,
+        password: userPassword
+      });
+
+      setLoading(false);
+      console.log('res Login==>', response.data); // Success message
+      if (response.status === 200) {
+        AsyncStorage.setItem('user_id', response.data.email);
+        navigation.replace('DrawerNavigationRoutes')
+        console.log(
+          'Registration Successful. Please Login to proceed'
+        );
+      } else {
+        setErrorText(response.data);
+      }
+    } catch (error) {
+      setLoading(false)
+      console.error('Error during Login', error);
+    }
+
   }
 
   return (
     <View style={styles.mainBody}>
-      {/* <Loader loading={loading} /> */}
+      <Loader loading={loading} />
       <ScrollView
         keyboardShouldPersistTaps='handled'
         contentContainerStyle={{

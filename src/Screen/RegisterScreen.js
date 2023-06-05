@@ -11,13 +11,14 @@ import {
   ScrollView,
 } from 'react-native';
 import Loader from './Components/Loader';
+import axios from 'axios';
 
 
 const RegisterScreen = ({ navigation }) => {
 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const [userAge, setUserAge] = useState('');
+  const [userAge, setUserAge] = useState();
   const [userAddress, setUserAddress] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const RegisterScreen = ({ navigation }) => {
   const addressInputRef = createRef();
   const passwordInputRef = createRef();
 
-  const handleSubmitButton = () => {
+  const handleSubmitButton = async () => {
     setErrortext('');
     if (!userName) {
       alert('Please fill Name');
@@ -53,46 +54,30 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     setLoading(true);
-    var dataToSend = {
-      name: userName,
-      email: userEmail,
-      age: userAge,
-      address: userAddress,
-      password: userPassword
-    };
-    var formBody = [];
-    for (var key in dataToSend) {
-      var encodedKey = encodeURIComponent(key);
-      var encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody.join('&');
 
-    fetch('http://localhost:3000/api/user/register', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setLoading(false);
-        console.log(responseJson);
-
-        if (responseJson.status === 'success') {
-          setIsRegistraionSuccess(true);
-          console.log(
-            'Registration Successful. Please Login to proceed'
-          );
-        } else {
-          setErrortext(responseJson.msg);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error(error);
+    try {
+      const response = await axios.post('http://192.168.86.79:3001/register', {
+        name: userName,
+        email: userEmail,
+        password: userPassword,
+        age: userAge,
+        address: userAddress
       });
+
+      setLoading(false);
+      console.log('res Reg==>', response.data); // Success message
+      if (response.status === 201) {
+        setIsRegistraionSuccess(true);
+        console.log(
+          'Registration Successful. Please Login to proceed'
+        );
+      } else {
+        setErrortext(response.data);
+      }
+    } catch (error) {
+      setLoading(false)
+      console.error('Error during registration', error);
+    }
   };
 
   if (isRegistraionSuccess) {

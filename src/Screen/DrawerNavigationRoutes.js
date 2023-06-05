@@ -20,6 +20,7 @@ const HomeScreenStack = ({ navigation }) => {
         component={HomeScreen}
         options={{
           title: 'Home',
+          headerTitleAlign: 'center',
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
           ),
@@ -57,6 +58,7 @@ const SettingScreenStack = ({ navigation }) => {
         component={SettingsScreen}
         options={{
           title: 'Settings',
+          headerTitleAlign: 'center'
         }}
       />
     </Stack.Navigator>
