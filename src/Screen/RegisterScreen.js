@@ -65,7 +65,6 @@ const RegisterScreen = ({ navigation }) => {
       });
 
       setLoading(false);
-      console.log('res Reg==>', response.data); // Success message
       if (response.status === 201) {
         setIsRegistraionSuccess(true);
         console.log(

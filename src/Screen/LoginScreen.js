@@ -36,46 +36,6 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
     setLoading(true);
-    // let dataToSend = { email: userEmail, password: userPassword }
-    // let formBody = [];
-    // for (let key in dataToSend) {
-    //   let encodedKey = encodeURIComponent(key);
-    //   let encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
-
-    // let user = {
-    //   email: userEmail,
-    //   password: userPassword
-    // };
-
-    // fetch('http://192.168.86.79:3001/login', {
-    //   method: 'POST',
-    //   body: user,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     setLoading(false);
-    //     console.log("res==>", responseJson);
-    //     if (responseJson.status === 'Login successful') {
-    //       AsyncStorage.setItem('user_id', responseJson.data.email);
-    //       console.log(responseJson.data.email);
-    //       navigation.replace('DrawerNavigationRoutes')
-    //     } else {
-    //       setErrorText(responseJson.msg);
-    //       console.log('Please check your email id or password');
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setLoading(false);
-    //     console.error(error);
-    //   })
-
-
     try {
       const response = await axios.post('http://192.168.86.79:3001/login', {
         email: userEmail,
@@ -83,8 +43,6 @@ const LoginScreen = ({ navigation }) => {
       });
 
       setLoading(false);
-      console.log('res Login==>', response.data); // Success message
-      //console.log('res Login==>', response.data.name); // Success message
       setLoggedUserName(response.data.name)
       if (response.status === 200) {
         AsyncStorage.setItem('user_id', response.data.email);
