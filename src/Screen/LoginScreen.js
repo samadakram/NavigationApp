@@ -1,4 +1,4 @@
-import React, { useState, createRef } from 'react'
+import React, { useState, createRef, useContext } from 'react'
 import {
   StyleSheet,
   TextInput,
@@ -14,6 +14,7 @@ import {
 import Loader from './Components/Loader';
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../Context/AppContext';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -21,6 +22,8 @@ const LoginScreen = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState();
   const [errorText, setErrorText] = useState('');
+
+  const { setLoggedUserName } = useContext(AppContext);
 
   const passwordInputRef = createRef();
   const handleSubmitPress = async () => {
@@ -81,6 +84,8 @@ const LoginScreen = ({ navigation }) => {
 
       setLoading(false);
       console.log('res Login==>', response.data); // Success message
+      //console.log('res Login==>', response.data.name); // Success message
+      setLoggedUserName(response.data.name)
       if (response.status === 200) {
         AsyncStorage.setItem('user_id', response.data.email);
         navigation.replace('DrawerNavigationRoutes')

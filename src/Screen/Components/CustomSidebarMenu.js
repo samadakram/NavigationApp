@@ -1,19 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, Text, Alert, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../../Context/AppContext';
 
 const CustomSidebarMenu = (props) => {
+
+  const { loggedUserName } = useContext(AppContext);
+
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
           <Text style={{ fontSize: 25, color: '#307ecc' }}>
-            {'About React'.charAt(0)}
+            {loggedUserName.charAt(0)}
           </Text>
         </View>
         <Text style={stylesSidebar.profileHeaderText}>
-          AboutReact
+          {loggedUserName}
         </Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />

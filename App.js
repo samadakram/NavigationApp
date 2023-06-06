@@ -14,6 +14,7 @@ import SplashScreen from './src/Screen/SplashScreen';
 import DrawerNavigationRoutes from './src/Screen/DrawerNavigationRoutes';
 import LoginScreen from './src/Screen/LoginScreen';
 import RegisterScreen from './src/Screen/RegisterScreen';
+import { AppProvider } from './src/Context/AppContext';
 
 const Stack = createStackNavigator();
 
@@ -46,25 +47,27 @@ const Auth = () => {
 function App() {
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='SplashScreen'>
-        <Stack.Screen
-          name='SplashScreen'
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Auth'
-          component={Auth}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='DrawerNavigationRoutes'
-          component={DrawerNavigationRoutes}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='SplashScreen'>
+          <Stack.Screen
+            name='SplashScreen'
+            component={SplashScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='Auth'
+            component={Auth}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DrawerNavigationRoutes'
+            component={DrawerNavigationRoutes}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppProvider>
   );
 }
 
