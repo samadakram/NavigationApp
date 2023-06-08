@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, Alert, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,17 +7,29 @@ import { AppContext } from '../../Context/AppContext';
 const CustomSidebarMenu = (props) => {
 
   const { loggedUserName } = useContext(AppContext);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_name')
+      .then((loggedUser) => {
+        setUserName(loggedUser);
+        console.log("User==>", loggedUser)
+      })
+      .catch(error => {
+        console.log('Error retrieving user name:', error);
+      });
+  }, []);
 
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
           <Text style={{ fontSize: 25, color: '#307ecc' }}>
-            {loggedUserName.charAt(0)}
+            {userName.charAt(0)}
           </Text>
         </View>
         <Text style={stylesSidebar.profileHeaderText}>
-          {loggedUserName}
+          {userName}
         </Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />

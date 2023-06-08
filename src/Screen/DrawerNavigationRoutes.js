@@ -8,13 +8,27 @@ import HomeScreen from './DrawerScreens/HomeScreen'
 import SettingsScreen from './DrawerScreens/SettingsScreen'
 import CustomSidebarMenu from './Components/CustomSidebarMenu'
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader'
+import { Screen } from 'react-native-screens'
+import UploadFileScreen from './StackScreens/UploadFileScreen'
+import FileListingScreen from './StackScreens/FileListingScreen'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const HomeScreenStack = ({ navigation }) => {
   return (
-    <Stack.Navigator initialRouteName='HomeScreen'>
+    <Stack.Navigator
+      initialRouteName='HomeScreen'
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "orange", //Set Header color
+        },
+        headerTintColor: "#fff", //Set Header text color
+        headerTitleStyle: {
+          fontWeight: "bold", //Set Header text style
+        },
+      }}
+    >
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
@@ -23,14 +37,21 @@ const HomeScreenStack = ({ navigation }) => {
           headerTitleAlign: 'center',
           headerLeft: () => (
             <NavigationDrawerHeader navigationProps={navigation} />
-          ),
-          headerStyle: {
-            backgroundColor: '#307ecc',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
+          )
+        }}
+      />
+      <Stack.Screen
+        name='UploadFileScreen'
+        component={UploadFileScreen}
+        options={{
+          title: 'Upload File'
+        }}
+      />
+      <Stack.Screen
+        name='FilesListingScreen'
+        component={FileListingScreen}
+        options={{
+          title: 'Uploaded Files'
         }}
       />
     </Stack.Navigator>

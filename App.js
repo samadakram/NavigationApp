@@ -14,6 +14,8 @@ import SplashScreen from './src/Screen/SplashScreen';
 import DrawerNavigationRoutes from './src/Screen/DrawerNavigationRoutes';
 import LoginScreen from './src/Screen/LoginScreen';
 import RegisterScreen from './src/Screen/RegisterScreen';
+import FileListingScreen from './src/Screen/StackScreens/FileListingScreen';
+import UploadFileScreen from './src/Screen/StackScreens/UploadFileScreen';
 import { AppProvider } from './src/Context/AppContext';
 
 const Stack = createStackNavigator();

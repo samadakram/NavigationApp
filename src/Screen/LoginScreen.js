@@ -46,6 +46,7 @@ const LoginScreen = ({ navigation }) => {
       setLoggedUserName(response.data.name)
       if (response.status === 200) {
         AsyncStorage.setItem('user_id', response.data.email);
+        AsyncStorage.setItem('user_name', response.data.name);
         navigation.replace('DrawerNavigationRoutes')
         console.log(
           'Registration Successful. Please Login to proceed'
@@ -55,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
       }
     } catch (error) {
       setLoading(false)
-      console.error('Error during Login', error);
+      setErrorText("Invalid email or password")
     }
 
   }
